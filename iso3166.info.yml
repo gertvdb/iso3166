@@ -1,0 +1,5 @@
+name: Iso3166
+description: Provide country and continent.
+package: Iso3166
+type: module
+core: 8.x
