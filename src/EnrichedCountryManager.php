@@ -5,7 +5,7 @@ namespace Drupal\iso3166;
 use Drupal\Core\Locale\CountryManager;
 use Drupal\Core\Locale\CountryManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\iso3166\Plugin\CountryEnricherPluginManager;
+use Drupal\iso3166\Plugin\CountryManagerEnrichPluginManager;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @package Drupal\iso3166
  */
-class ISO3166CountryManager extends CountryManager implements ISO3166CountryManagerInterface, ContainerInjectionInterface {
+class EnrichedCountryManager extends CountryManager implements EnrichedCountryManagerInterface, ContainerInjectionInterface {
 
   /**
    * The original country manager.
@@ -31,11 +31,11 @@ class ISO3166CountryManager extends CountryManager implements ISO3166CountryMana
   protected $moduleHandler;
 
   /**
-   * The country enricher.
+   * The plugin manager for enrich country manager plugins.
    *
-   * @var \Drupal\iso3166\Plugin\CountryEnricherPluginManager
+   * @var \Drupal\iso3166\Plugin\CountryManagerEnrichPluginManager
    */
-  protected $countryEnricher;
+  protected $countryManagerEnricher;
 
   /**
    * ISO3166CountryManager constructor.
@@ -44,12 +44,12 @@ class ISO3166CountryManager extends CountryManager implements ISO3166CountryMana
    *   The original country manager.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
-   * @param \Drupal\iso3166\Plugin\CountryEnricherPluginManager $countryEnricher
+   * @param \Drupal\iso3166\Plugin\CountryManagerEnrichPluginManager $countryManagerEnricher
    *   The module handler.
    */
-  public function __construct(CountryManagerInterface $countryManager, ModuleHandlerInterface $module_handler, CountryEnricherPluginManager $countryEnricher) {
+  public function __construct(CountryManagerInterface $countryManager, ModuleHandlerInterface $module_handler, CountryManagerEnrichPluginManager $countryManagerEnricher) {
     $this->countryManager = $countryManager;
-    $this->countryEnricher = $countryEnricher;
+    $this->countryManagerEnricher = $countryManagerEnricher;
     parent::__construct($module_handler);
   }
 
@@ -69,14 +69,14 @@ class ISO3166CountryManager extends CountryManager implements ISO3166CountryMana
    */
   public function getEnrichedList($originalValueKey = 'name') {
     $enrichedList = [];
-    $enrichmentPlugins = $this->countryEnricher->getDefinitions();
+    $enrichmentPlugins = $this->countryManagerEnricher->getDefinitions();
 
     foreach ($enrichmentPlugins as $pluginId => $pluginInfo) {
 
-      /** @var \Drupal\iso3166\Plugin\CountryEnricherPluginInterface $enrichmentInstance */
-      $enrichmentInstance = $this->countryEnricher->createInstance($pluginId);
-      $enrichment = $enrichmentInstance->getEnrichment();
-      $enrichmentKey = $enrichmentInstance->getEnrichmentKey();
+      /** @var \Drupal\iso3166\Plugin\CountryManagerEnrichPluginInterface $enrichmentInstance */
+      $enrichmentInstance = $this->countryManagerEnricher->createInstance($pluginId);
+      $enrichment = $enrichmentInstance->getEnrich();
+      $enrichmentKey = $enrichmentInstance->getEnrichKey();
 
       foreach ($this->countryManager->getList() as $alpha2 => $country) {
         $enrichedList[$alpha2][$originalValueKey] = $country;
@@ -97,12 +97,11 @@ class ISO3166CountryManager extends CountryManager implements ISO3166CountryMana
    * {@inheritdoc}
    */
   public function searchEnrichedList($key, $value) {
-    $result = NULL;
+    $result = [];
 
     foreach ($this->getEnrichedList() as $item) {
       if (isset($item[$key]) && $item[$key] === $value) {
-        $result = $item;
-        break;
+        $result[] = $item;
       }
     }
 

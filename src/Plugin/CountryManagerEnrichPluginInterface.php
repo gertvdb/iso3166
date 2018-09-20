@@ -7,16 +7,16 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 /**
  * Defines an interface for Country enricher plugin plugins.
  */
-interface CountryEnricherPluginInterface extends PluginInspectionInterface {
+interface CountryManagerEnrichPluginInterface extends PluginInspectionInterface {
 
   /**
    * {@inheritdoc}
    */
-  public function getEnrichment();
+  public function getEnrich();
 
   /**
    * {@inheritdoc}
    */
-  public function getEnrichmentKey();
+  public function getEnrichKey();
 
 }

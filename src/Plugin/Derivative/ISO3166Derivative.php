@@ -8,7 +8,7 @@ use League\ISO3166\ISO3166;
 /**
  * Provides country enricher plugins for ISO3166.
  */
-class ISO3166EnricherDerivative extends DeriverBase {
+class ISO3166Derivative extends DeriverBase {
 
   /**
    * {@inheritdoc}

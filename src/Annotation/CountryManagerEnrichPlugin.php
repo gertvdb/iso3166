@@ -5,14 +5,14 @@ namespace Drupal\iso3166\Annotation;
 use Drupal\Component\Annotation\Plugin;
 
 /**
- * Defines a Country enricher plugin item annotation object.
+ * Defines a CountryManagerEnrichPlugin annotation object.
  *
- * @see \Drupal\iso3166\Plugin\CountryEnricherPluginManager
+ * @see \Drupal\iso3166\Plugin\CountryManagerEnricherPluginManager
  * @see plugin_api
  *
  * @Annotation
  */
-class CountryEnricherPlugin extends Plugin {
+class CountryManagerEnrichPlugin extends Plugin {
 
   /**
    * The plugin ID.
@@ -31,17 +31,17 @@ class CountryEnricherPlugin extends Plugin {
   public $label;
 
   /**
-   * The enrichment array.
+   * The array of enrichment data.
    *
    * @var array
    */
-  public $enrichment;
+  public $enrich = [];
 
   /**
-   * The enrichment key.
+   * The enrich array key.
    *
-   * @var string
+   * @var string|null
    */
-  public $enrichmentKey;
+  public $enrichKey = NULL;
 
 }

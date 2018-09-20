@@ -95,7 +95,7 @@ use Drupal\iso3166\Plugin\CountryEnricherPluginBase;
  * @CountryManagerEnrichPlugin(
  *   id = "president_enricher",
  *   label = @Translation("President enricher", context = "President"),
- *   enrichmentKey = "president"
+ *   enrich_key = "president"
  * )
  */
 class ISO3166Enricher extends CountryEnricherPluginBase {
@@ -103,7 +103,7 @@ class ISO3166Enricher extends CountryEnricherPluginBase {
   /**
    * {@inheritdoc}
    */
-   public function getEnrichment() {
+   public function getEnrich() {
       return [
         'BE' => 'Charles Michel',
         'US' => 'Donald Thrump',

@@ -2,7 +2,7 @@ services:
 
   # Services
   iso3166.country_manager:
-    class: Drupal\iso3166\ISO3166CountryManager
+    class: Drupal\iso3166\EnrichedCountryManager
     decorates: country_manager
     decoration_priority: 9
     public: false
@@ -10,5 +10,5 @@ services:
 
   # Plugin managers
   plugin.manager.country_enricher_plugin:
-    class: Drupal\iso3166\Plugin\CountryEnricherPluginManager
+    class: Drupal\iso3166\Plugin\CountryManagerEnrichPluginManager
     parent: default_plugin_manager

@@ -9,8 +9,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 /**
  * Provides the Country enricher plugin plugin manager.
  */
-class CountryEnricherPluginManager extends DefaultPluginManager {
-
+class CountryManagerEnrichPluginManager extends DefaultPluginManager {
 
   /**
    * Constructs a new CountryEnricherPluginManager object.
@@ -24,10 +23,10 @@ class CountryEnricherPluginManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct('Plugin/CountryEnricherPlugin', $namespaces, $module_handler, 'Drupal\iso3166\Plugin\CountryEnricherPluginInterface', 'Drupal\iso3166\Annotation\CountryEnricherPlugin');
+    parent::__construct('Plugin/CountryManagerEnrichPlugin', $namespaces, $module_handler, 'Drupal\iso3166\Plugin\CountryManagerEnrichPluginInterface', 'Drupal\iso3166\Annotation\CountryManagerEnrichPlugin');
 
-    $this->alterInfo('iso3166_country_enricher_plugin_info');
-    $this->setCacheBackend($cache_backend, 'iso3166_country_enricher_plugin_plugins');
+    $this->alterInfo('iso3166_country_manager_enrich_plugin_info');
+    $this->setCacheBackend($cache_backend, 'iso3166_country_manager_enrich_plugin_plugins');
   }
 
 }
