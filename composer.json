@@ -1,5 +1,5 @@
 {
-  "name": "drupal/iso3166",
+  "name": "gertvdb/iso3166",
   "description": "Provide support for ISO3166 codes",
   "type": "drupal-module",
   "license": "GPL-2.0+",
