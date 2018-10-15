@@ -1,8 +1,9 @@
 Description
 -----------
-This module provides a country manager enrich plugin to add extra country
-specific information to the drupal country manager. It decorates the country
-manager with 2 new methods to provide and search an enriched country list. 
+This module provides countries and contintents based on the official iso3166 data.
+It provides both countries and continents as plugins and maps them together.
+Since the countries and continents are plugin the end user can easily add it's own
+or override the existing.
 
 Installation
 ------------
@@ -11,106 +12,85 @@ To install this module, do the following:
 With composer:
 1. ```composer require gertvdb/iso3166```
 
+
 Examples
---------
-You can find an example on how to enrich the CountryManager with your
-own data below. 
+------------
+You can find an example on how to use the iso3166 module below. 
+The module provides a service to work with the plugin data.  
 
-#### Calling the CountryManager.
-Since this module decorates the default Country Manager you can just call
-or inject that service. When this module is enabled the country manager will 
-provide 2 extra methods you can use.
+#### Using the plugin managers.
+The plugin managers provide some extra methods to easily get country and continent data.
+
 
 ``` 
-  \Drupal::service('country_manager'); 
+  /** @var \Drupal\iso3166\Plugin\CountryManager $pluginManager */
+  $pluginManager = \Drupal::service('plugin.manager.country');
+  
+  $belguim = $pluginManager->getCountry('BE');
+  $allCountries = $pluginManager->getCountries();
+  
 ```
 
-
-#### Method 1 : ``` getEnrichedList(); ```
-This method will get you the enriched country data.
-
 ``` 
- $countyManager = \Drupal::service('country_manager');
- $list = $countryManager->getEnrichedList();
- 
- // Outputs
- 
- [
-    'BE' => [
-      'alpha2' => 'BE',
-      'alpha3' => 'BEL',
-      'numeric' => '056',
-      ...
-    ]
- ]
- 
+  /** @var \Drupal\iso3166\Plugin\ContinentManager $pluginManager */
+  $pluginManager = \Drupal::service('plugin.manager.continent');
+  
+  $europe = $pluginManager->getContinent('EU');
+  $allContinents = $pluginManager->getContinents();
+  
 ```
 
-#### Method 2 : ```searchEnrichedList($key, $value);```
-This method will help you search the enriched country data.
-Note, this will always return an array since multiple countries
-can match the search condition.
-
+#### Using the service.
+The service provides several methods to work with country and continent data.
 
 ``` 
- $countyManager = \Drupal::service('country_manager');
- $result = $countryManager->searchEnrichedList('currency', 'EURO');
- 
- // Outputs
- 
- [
-    'BE' => [
-      'alpha2' => 'BE',
-      'alpha3' => 'BEL',
-      'numeric' => '056',
-      'currency' => 'EURO'
-    ],
-    'NL' => [
-      'alpha2' => 'NL',
-      'alpha3' => 'NLD',
-      'numeric' => '528',
-      'currency' => 'EURO'
-    ]
-    ...
- ]
- 
+  /** @var \Drupal\iso3166\Iso3166 $service */
+  $service = \Drupal::service('iso3166');
+  
+  $continentOfBelgium = $service->getContinentByCountry('BE');
+  $allCountriesInEurope = $service->getCountriesByContinent('EU');
+  
 ```
 
-#### Add your own data to the CountryManager
-The ISO3166CountryManager decorates the basic CountryManager service in Drupal and add's
-the ability to enrich it with CountryManagerEnrichPlugins. By default this module
-provides it's own enrich plugin to add ISO3166 data to the CountryManager. 
-
+#### Changing plugin data.
+To change data from the plugin you need to provide an alter hook. Or if you don't
+like hooks, have a look at **hook_event_dispatcher** module and dispatch 
+an iso3166_country_info_alter event.
 
 ``` 
-<?php
+  /**
+   * Implements hook_iso3166_country_info_alter().
+   */
+  function MY_MODULE_iso3166_country_info_alter(array &$definitions) {
+    $definitions['country:BE']['label'] = t('Other name for belgium');
+  }
+  
+```
 
-namespace Drupal\MY_MODULE\Plugin\CountryEnricherPlugin;
+#### Adding data.
+Since both continents and countries are plugin you can easily provide your own.
+Below example will add "Neverland" to the list of countries in Europe. But you can
+as well provide a new continent to add it to in the same manner.
 
-use Drupal\iso3166\Plugin\CountryEnricherPluginBase;
-
-/**
- * Provide a President enricher.
- *
- * @CountryManagerEnrichPlugin(
- *   id = "president_enricher",
- *   label = @Translation("President enricher", context = "President"),
- *   enrich_key = "president"
- * )
- */
-class ISO3166Enricher extends CountryEnricherPluginBase {
+``` 
+   
+  namespace Drupal\MY_MODULE\Plugin\iso3166\Country;
+  
+  use Drupal\iso3166\Plugin\iso3166\Country\CountryPluginBase;
   
   /**
-   * {@inheritdoc}
+   * Provides a country.
+   *
+   * @Country(
+   *   id = "country_neverland",
+   *   label = @Translation("Neverland"),
+   *   alpha2 = "NV",
+   *   alpha3 = "NVL",
+   *   numeric = "999",
+   *   continent = "EU"
+   * )
    */
-   public function getEnrich() {
-      return [
-        'BE' => 'Charles Michel',
-        'US' => 'Donald Thrump',
-        ... 
-      ];
-   }
- 
-}
+  class Neverland extends CountryPluginBase {}
 
-``` 
+  
+```

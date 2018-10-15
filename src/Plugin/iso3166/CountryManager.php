@@ -32,7 +32,36 @@ class CountryManager extends DefaultPluginManager implements CountryManagerInter
   /**
    * {@inheritdoc}
    */
-  public function createInstanceByAlpha2($alpha2) {
+  public function getCountry($alpha2) {
+    /** @var \Drupal\iso3166\Plugin\iso3166\Country\CountryPluginInterface $countryInstance */
+    $countryInstance = $this->createInstanceByAlpha2($alpha2);
+    return $countryInstance ? $countryInstance->toCountry() : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCountries() {
+    $countries = [];
+    $countryDefinitions = $this->getDefinitions();
+    foreach ($countryDefinitions as $pluginId => $pluginConfig) {
+
+      /** @var \Drupal\iso3166\Plugin\iso3166\Country\CountryPluginInterface $countryInstance */
+      $countryInstance = $this->createInstance($pluginId, $pluginConfig);
+
+      /** @var \Drupal\iso3166\Country $country */
+      $country = $countryInstance->toCountry();
+
+      $countries[] = $country;
+    }
+
+    return $countries;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function createInstanceByAlpha2($alpha2) {
     $instance = NULL;
     $countryDefinitions = $this->getDefinitions();
     foreach ($countryDefinitions as $pluginId => $pluginConfig) {

@@ -32,7 +32,36 @@ class ContinentManager extends DefaultPluginManager implements ContinentManagerI
   /**
    * {@inheritdoc}
    */
-  public function createInstanceByAlpha2($alpha2) {
+  public function getContinent($alpha2) {
+    /** @var \Drupal\iso3166\Plugin\iso3166\Continent\ContinentPluginInterface $continentInstance */
+    $continentInstance = $this->createInstanceByAlpha2($alpha2);
+    return $continentInstance ? $continentInstance->toContinent() : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getContinents() {
+    $continents = [];
+    $countryDefinitions = $this->getDefinitions();
+    foreach ($countryDefinitions as $pluginId => $pluginConfig) {
+
+      /** @var \Drupal\iso3166\Plugin\iso3166\Continent\ContinentPluginInterface $continentInstance */
+      $continentInstance = $this->createInstance($pluginId, $pluginConfig);
+
+      /** @var \Drupal\iso3166\Continent $continent */
+      $continent = $continentInstance->toContinent();
+
+      $continents[] = $continent;
+    }
+
+    return $continents;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function createInstanceByAlpha2($alpha2) {
     $instance = NULL;
     $continentDefinitions = $this->getDefinitions();
     foreach ($continentDefinitions as $pluginId => $pluginConfig) {

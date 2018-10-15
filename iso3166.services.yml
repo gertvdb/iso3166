@@ -3,7 +3,7 @@ services:
   # Services
   iso3166:
     class: Drupal\iso3166\Service\Iso3166
-    arguments: ['@plugin.manager.country', '@plugin.manager.continent']
+    arguments: ['@plugin.manager.country']
   iso3166.data_provider:
     class: Drupal\iso3166\Service\DataProvider
     arguments: ['@string_translation']
