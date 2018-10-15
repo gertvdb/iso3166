@@ -1,14 +1,25 @@
 services:
 
   # Services
-  iso3166.country_manager:
-    class: Drupal\iso3166\EnrichedCountryManager
-    decorates: country_manager
-    decoration_priority: 9
-    public: false
-    arguments: ['@iso3166.country_manager.inner', '@module_handler','@plugin.manager.country_enricher_plugin']
+  iso3166:
+    class: Drupal\iso3166\Service\Iso3166
+    arguments: ['@plugin.manager.country', '@plugin.manager.continent']
+  iso3166.data_provider:
+    class: Drupal\iso3166\Service\DataProvider
+    arguments: ['@string_translation']
+
+  # Factory
+  iso3166.country_factory:
+      class: Drupal\iso3166\Factory\CountryFactory
+      arguments: ['@plugin.manager.continent']
+  iso3166.continent_factory:
+      class: Drupal\iso3166\Factory\ContinentFactory
+      arguments: []
 
   # Plugin managers
-  plugin.manager.country_enricher_plugin:
-    class: Drupal\iso3166\Plugin\CountryManagerEnrichPluginManager
+  plugin.manager.country:
+    class: Drupal\iso3166\Plugin\iso3166\CountryManager
+    parent: default_plugin_manager
+  plugin.manager.continent:
+    class: Drupal\iso3166\Plugin\iso3166\ContinentManager
     parent: default_plugin_manager

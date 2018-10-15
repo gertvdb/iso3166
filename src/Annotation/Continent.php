@@ -5,14 +5,15 @@ namespace Drupal\iso3166\Annotation;
 use Drupal\Component\Annotation\Plugin;
 
 /**
- * Defines a CountryManagerEnrichPlugin annotation object.
+ * Defines a Continent item annotation object.
  *
- * @see \Drupal\iso3166\Plugin\CountryManagerEnricherPluginManager
+ * @see \Drupal\iso3166\Plugin\ContinentManager
  * @see plugin_api
  *
  * @Annotation
  */
-class CountryManagerEnrichPlugin extends Plugin {
+class Continent extends Plugin {
+
 
   /**
    * The plugin ID.
@@ -31,17 +32,10 @@ class CountryManagerEnrichPlugin extends Plugin {
   public $label;
 
   /**
-   * The array of enrichment data.
+   * The alpha2 code of the continent.
    *
-   * @var array
+   * @var string
    */
-  public $enrich = [];
-
-  /**
-   * The enrich array key.
-   *
-   * @var string|null
-   */
-  public $enrichKey = NULL;
+  public $alpha2;
 
 }
