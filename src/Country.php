@@ -101,4 +101,16 @@ class Country implements CountryInterface {
     return $this->continent;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function toArray() {
+    return [
+      'alpha2' => $this->getAlpha2(),
+      'alpha3' => $this->getAlpha3(),
+      'numeric' => $this->getNumeric(),
+      'continent' => $this->getContinent() ? $this->getContinent()->getAlpha2() : NULL,
+    ];
+  }
+
 }

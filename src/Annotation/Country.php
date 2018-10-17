@@ -14,7 +14,6 @@ use Drupal\Component\Annotation\Plugin;
  */
 class Country extends Plugin {
 
-
   /**
    * The plugin ID.
    *

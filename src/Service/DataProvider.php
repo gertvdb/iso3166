@@ -41,7 +41,7 @@ class DataProvider implements ContainerInjectionInterface {
   public function getList() {
     return [
       [
-        'code' => 'AF',
+        'alpha2' => 'AF',
         'label' => $this->t('Africa'),
         'countries' => [
           [
@@ -395,7 +395,7 @@ class DataProvider implements ContainerInjectionInterface {
         ],
       ],
       [
-        'code' => 'AN',
+        'alpha2' => 'AN',
         'label' => $this->t('Antarctica'),
         'countries' => [
           [
@@ -431,7 +431,7 @@ class DataProvider implements ContainerInjectionInterface {
         ],
       ],
       [
-        'code' => 'AS',
+        'alpha2' => 'AS',
         'label' => $this->t('Asia'),
         'countries' => [
           [
@@ -749,7 +749,7 @@ class DataProvider implements ContainerInjectionInterface {
         ],
       ],
       [
-        'code' => 'EU',
+        'alpha2' => 'EU',
         'label' => $this->t('Europe'),
         'countries' => [
           [
@@ -1067,7 +1067,7 @@ class DataProvider implements ContainerInjectionInterface {
         ],
       ],
       [
-        'code' => 'NA',
+        'alpha2' => 'NA',
         'label' => $this->t('North america'),
         'countries' => [
           [
@@ -1319,7 +1319,7 @@ class DataProvider implements ContainerInjectionInterface {
         ],
       ],
       [
-        'code' => 'OC',
+        'alpha2' => 'OC',
         'label' => $this->t('Oceania'),
         'countries' => [
           [
@@ -1487,7 +1487,7 @@ class DataProvider implements ContainerInjectionInterface {
         ],
       ],
       [
-        'code' => 'SA',
+        'alpha2' => 'SA',
         'label' => $this->t('South america'),
         'countries' => [
           [

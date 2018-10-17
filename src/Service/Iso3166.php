@@ -3,9 +3,9 @@
 namespace Drupal\iso3166\Service;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\iso3166\Plugin\iso3166\ContinentManager;
+use Drupal\iso3166\Plugin\Iso3166\ContinentManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\iso3166\Plugin\iso3166\CountryManager;
+use Drupal\iso3166\Plugin\Iso3166\CountryManager;
 
 /**
  * Class Iso3611.
@@ -17,14 +17,21 @@ class Iso3166 implements ContainerInjectionInterface {
   /**
    * The country manager.
    *
-   * @var \Drupal\iso3166\Plugin\iso3166\CountryManager
+   * @var \Drupal\iso3166\Plugin\Iso3166\CountryManager
    */
   protected $countryManager;
 
   /**
+   * The country manager.
+   *
+   * @var \Drupal\iso3166\Factory\CountryFactory
+   */
+  protected $countryFactory;
+
+  /**
    * Creates an Iso3166Countries service.
    *
-   * @param \Drupal\iso3166\Plugin\iso3166\CountryManager $countryManager
+   * @param \Drupal\iso3166\Plugin\Iso3166\CountryManager $countryManager
    *   The country manager.
    */
   public function __construct(CountryManager $countryManager) {
@@ -41,7 +48,39 @@ class Iso3166 implements ContainerInjectionInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Get a country.
+   *
+   * @param string $alpha2
+   *   The country alpha2 key.
+   *
+   * @return \Drupal\iso3166\CountryInterface|null
+   *   The Country object or NULL.
+   */
+  public function getCountry($alpha2) {
+    return $this->countryFactory->createCountry($alpha2);
+  }
+
+  /**
+   * Get a continent.
+   *
+   * @param string $alpha2
+   *   The continent alpha2 key.
+   *
+   * @return \Drupal\iso3166\ContinentInterface|null
+   *   The Continent object or NULL.
+   */
+  public function getContinent($alpha2) {
+    return $this->countryFactory->createCountry($alpha2);
+  }
+
+  /**
+   * Get the countries of a continent.
+   *
+   * @param string $alpha2
+   *   The continent alpha2 key.
+   *
+   * @return \Drupal\iso3166\CountryInterface[]
+   *   An array of Country objects.
    */
   public function getCountriesByContinent($alpha2) {
     $continentCountries = [];
@@ -59,15 +98,6 @@ class Iso3166 implements ContainerInjectionInterface {
     }
 
     return $continentCountries;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getContinentByCountry($alpha2) {
-    /** @var \Drupal\iso3166\Country $country */
-    $country = $this->countryManager->getCountry($alpha2);
-    return $country ? $country->getContinent() : NULL;
   }
 
 }

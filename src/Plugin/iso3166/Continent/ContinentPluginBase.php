@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\iso3166\Plugin\iso3166\Continent;
+namespace Drupal\iso3166\Plugin\Iso3166\Continent;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Component\Plugin\PluginBase;
@@ -51,9 +51,22 @@ abstract class ContinentPluginBase extends PluginBase implements ContinentPlugin
   /**
    * {@inheritdoc}
    */
+  public function getLabel() {
+    return $this->getPluginDefinition()['label'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAlpha2() {
+    return $this->getPluginDefinition()['alpha2'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function toContinent() {
     return $this->continentFactory->createContinent(
-      $this->getPluginDefinition()['label'],
       $this->getPluginDefinition()['alpha2']
     );
   }

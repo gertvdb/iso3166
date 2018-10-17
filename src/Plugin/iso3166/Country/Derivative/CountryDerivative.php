@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\iso3166\Plugin\iso3166\Country\Derivative;
+namespace Drupal\iso3166\Plugin\Iso3166\Country\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\iso3166\Service\Iso3166Provider;
+use Drupal\iso3166\Service\DataProvider;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -13,26 +13,26 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CountryDerivative extends DeriverBase implements ContainerDeriverInterface {
 
   /**
-   * The iso3166 service.
+   * The data provider.
    *
-   * @var \Drupal\iso3166\Service\Iso3166Provider
+   * @var \Drupal\iso3166\Service\DataProvider
    */
-  protected $iso3166;
+  protected $dataProvider;
 
   /**
-   * Creates an CountryDerivative object.
+   * Creates a CountryDerivative.
    *
-   * @param \Drupal\iso3166\Service\Iso3166Provider $iso3166
-   *   The iso3166 service.
+   * @param \Drupal\iso3166\Service\DataProvider $dataProvider
+   *   The data provider.
    */
-  public function __construct(Iso3166Provider $iso3166) {
-    $this->iso3166 = $iso3166;
+  public function __construct(DataProvider $dataProvider) {
+    $this->dataProvider = $dataProvider;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container, $basePluginId) {
     return new static(
       $container->get('iso3166.data_provider')
     );
@@ -43,18 +43,32 @@ class CountryDerivative extends DeriverBase implements ContainerDeriverInterface
    */
   public function getDerivativeDefinitions($basePluginDefinition) {
 
-    foreach ($this->iso3166->getList() as $continent) {
-      $countries = $continent['countries'];
-      foreach ($countries as $country) {
-        $key = $country['alpha2'];
+    // Get the continent data for the provider.
+    $dataList = $this->dataProvider->getList();
 
-        $this->derivatives[$key] = $basePluginDefinition;
-        $this->derivatives[$key]['id'] = $key;
-        $this->derivatives[$key]['label'] = $country['name'];
-        $this->derivatives[$key]['alpha2'] = $key;
-        $this->derivatives[$key]['alpha3'] = $country['alpha3'];
-        $this->derivatives[$key]['numeric'] = $country['numeric'];
-        $this->derivatives[$key]['continent'] = $continent['code'];
+    // Loop continents.
+    if (!empty($dataList)) {
+      foreach ($dataList as $continentItem) {
+
+        // Get the country data for the continent.
+        $countries = $continentItem['countries'];
+
+        // Loop countries in continent.
+        if (!empty($countries)) {
+          foreach ($countries as $country) {
+
+            // Create derived plugins.
+            $key = $country['alpha2'];
+            $this->derivatives[$key] = $basePluginDefinition;
+            $this->derivatives[$key]['id'] = $key;
+            $this->derivatives[$key]['label'] = $country['name'];
+            $this->derivatives[$key]['alpha2'] = $country['alpha2'];
+            $this->derivatives[$key]['alpha3'] = $country['alpha3'];
+            $this->derivatives[$key]['numeric'] = $country['numeric'];
+            $this->derivatives[$key]['continent'] = $continentItem['alpha2'];
+
+          }
+        }
       }
     }
 

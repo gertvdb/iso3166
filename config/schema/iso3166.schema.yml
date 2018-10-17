@@ -1,0 +1,15 @@
+field.storage_settings.iso3166:
+  type: mapping
+  label: 'Iso3166 field storage settings'
+  mapping:
+    provider:
+      type: string
+      label: 'Provider'
+    exclude:
+      type: boolean
+      label: 'Whether to use all countries in provider list or not'
+    included_countries:
+      type: sequence
+      label: 'Countries to include from provider list'
+      sequence:
+        - type: string

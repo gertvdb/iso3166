@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\iso3166\Plugin\iso3166\Country;
+namespace Drupal\iso3166\Plugin\Iso3166\Country;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Component\Plugin\PluginBase;
@@ -51,14 +51,43 @@ abstract class CountryPluginBase extends PluginBase implements CountryPluginInte
   /**
    * {@inheritdoc}
    */
+  public function getLabel() {
+    return $this->getPluginDefinition()['label'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAlpha2() {
+    return $this->getPluginDefinition()['alpha2'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAlpha3() {
+    return $this->getPluginDefinition()['alpha3'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNumeric() {
+    return $this->getPluginDefinition()['numeric'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getContinent() {
+    return $this->getPluginDefinition()['continent'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function toCountry() {
-    return $this->countryFactory->createCountry(
-      $this->getPluginDefinition()['label'],
-      $this->getPluginDefinition()['alpha2'],
-      $this->getPluginDefinition()['alpha3'],
-      $this->getPluginDefinition()['numeric'],
-      $this->getPluginDefinition()['continent']
-    );
+    return $this->countryFactory->createCountry($this->getAlpha2());
   }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\iso3166\Plugin\iso3166\Continent;
+namespace Drupal\iso3166\Plugin\Iso3166\Continent;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
 
@@ -10,7 +10,26 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 interface ContinentPluginInterface extends PluginInspectionInterface {
 
   /**
-   * {@inheritdoc}
+   * The country label.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The country label.
+   */
+  public function getLabel();
+
+  /**
+   * The alpha2 country code.
+   *
+   * @return string
+   *   The alpha2 country code.
+   */
+  public function getAlpha2();
+
+  /**
+   * The continent object.
+   *
+   * @return \Drupal\iso3166\ContinentInterface
+   *   A continent object.
    */
   public function toContinent();
 

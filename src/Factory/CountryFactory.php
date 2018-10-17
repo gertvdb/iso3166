@@ -5,7 +5,7 @@ namespace Drupal\iso3166\Factory;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\iso3166\Country;
-use Drupal\iso3166\Plugin\iso3166\ContinentManager;
+use Drupal\iso3166\Plugin\Iso3166\CountryManagerInterface;
 
 /**
  * Defines an factory for creating a country.
@@ -13,20 +13,30 @@ use Drupal\iso3166\Plugin\iso3166\ContinentManager;
 class CountryFactory implements ContainerInjectionInterface {
 
   /**
-   * The continent plugin manager.
+   * The continent factory.
    *
-   * @var \Drupal\iso3166\Plugin\iso3166\ContinentManager
+   * @var \Drupal\iso3166\Factory\ContinentFactory
    */
-  protected $continentManager;
+  protected $continentFactory;
+
+  /**
+   * The country plugin manager.
+   *
+   * @var \Drupal\iso3166\Plugin\Iso3166\CountryManagerInterface
+   */
+  protected $countryManager;
 
   /**
    * Creates an CountryDerivative object.
    *
-   * @var \Drupal\iso3166\Plugin\iso3166\ContinentManager $continentManager
+   * @param \Drupal\iso3166\Plugin\Iso3166\CountryManagerInterface $countryManager
+   *   The continent plugin manager.
+   * @param \Drupal\iso3166\Factory\ContinentFactory $continentFactory
    *   The continent plugin manager.
    */
-  public function __construct(ContinentManager $continentManager) {
-    $this->continentManager = $continentManager;
+  public function __construct(CountryManagerInterface $countryManager, ContinentFactory $continentFactory) {
+    $this->countryManager = $countryManager;
+    $this->continentFactory = $continentFactory;
   }
 
   /**
@@ -34,18 +44,30 @@ class CountryFactory implements ContainerInjectionInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('plugin.manager.continent')
+      $container->get('plugin.manager.country'),
+      $container->get('iso3166.continent_factory')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function createCountry($name, $alpha2, $alpha3, $numeric, $continent) {
+  public function createCountry($alpha2) {
     try {
-      $continentInstance = $this->continentManager->createInstanceByAlpha2($continent);
-      $continent = $continentInstance ? $continentInstance->toContinent() : NULL;
-      return new Country($name, $alpha2, $alpha3, $numeric, $continent);
+      $countryInstance = $this->countryManager->createInstanceByAlpha2($alpha2);
+      if (!$countryInstance) {
+        return NULL;
+      }
+
+      $continent = $this->continentFactory->createContinent($countryInstance->getContinent());
+
+      return new Country(
+        $countryInstance->getLabel(),
+        $countryInstance->getAlpha2(),
+        $countryInstance->getAlpha3(),
+        $countryInstance->getNumeric(),
+        $continent
+      );
     }
     catch (\Exception $e) {
       return NULL;
