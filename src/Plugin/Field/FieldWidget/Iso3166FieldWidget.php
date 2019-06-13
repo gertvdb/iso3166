@@ -2,6 +2,8 @@
 
 namespace Drupal\iso3166\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Annotation\Translation;
+use Drupal\Core\Field\Annotation\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\WidgetBase;

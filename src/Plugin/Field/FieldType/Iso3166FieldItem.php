@@ -2,6 +2,8 @@
 
 namespace Drupal\iso3166\Plugin\Field\FieldType;
 
+use Drupal\Core\Annotation\Translation;
+use Drupal\Core\Field\Annotation\FieldType;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Field\FieldItemBase;
@@ -249,13 +251,15 @@ class Iso3166FieldItem extends FieldItemBase implements Iso3166FieldItemInterfac
 
   /**
    * {@inheritdoc}
+   *
+   * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
    */
-  public function onChange($propertyName) {
+  public function onChange($propertyName, $notify = true) {
     // Enforce that the computed country is recalculated.
     if (in_array($propertyName, ['alpha2', 'alpha3', 'numeric', 'continent'])) {
       $this->set('value', NULL);
     }
-    parent::onChange($propertyName);
+    parent::onChange($propertyName, $notify);
   }
 
   /**
@@ -271,7 +275,7 @@ class Iso3166FieldItem extends FieldItemBase implements Iso3166FieldItemInterfac
       $value = $value->toArray();
     }
 
-    parent::setValue($value);
+    parent::setValue($value, $notify);
   }
 
   /**
