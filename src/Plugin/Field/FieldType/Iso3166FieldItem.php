@@ -254,7 +254,7 @@ class Iso3166FieldItem extends FieldItemBase implements Iso3166FieldItemInterfac
    *
    * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
    */
-  public function onChange($propertyName, $notify = true) {
+  public function onChange($propertyName, $notify = TRUE) {
     // Enforce that the computed country is recalculated.
     if (in_array($propertyName, ['alpha2', 'alpha3', 'numeric', 'continent'])) {
       $this->set('value', NULL);
