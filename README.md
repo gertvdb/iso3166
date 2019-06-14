@@ -68,7 +68,7 @@ an iso3166_country_info_alter event.
 ```
 
 #### Adding data.
-Since both continents and countries are plugin you can easily provide your own.
+Since both continents, countries and county collections are plugin you can easily provide your own.
 Below example will add "Neverland" to the list of countries in Europe. But you can
 as well provide a new continent to add it to in the same manner.
 
@@ -76,6 +76,8 @@ as well provide a new continent to add it to in the same manner.
    
   namespace Drupal\MY_MODULE\Plugin\iso3166\Country;
   
+  use Drupal\Core\Annotation\Translation;
+  use Drupal\iso3166\Annotation\Country;
   use Drupal\iso3166\Plugin\iso3166\Country\CountryPluginBase;
   
   /**
@@ -94,3 +96,48 @@ as well provide a new continent to add it to in the same manner.
 
   
 ```
+
+``` 
+   
+  namespace Drupal\MY_MODULE\Plugin\iso3166\Continent;
+  
+  use Drupal\Core\Annotation\Translation;
+  use Drupal\iso3166\Annotation\Continent;
+  use Drupal\iso3166\Plugin\Iso3166\Continent\ContinentPluginBase;
+  
+  /**
+   * Provides a continent.
+   *
+   * @Continent(
+   *   id = "continent_zealandia",
+   *   label = @Translation("Zealandia"),
+   *   alpha2 = "ZL",
+   * )
+   */
+  class Zealandia extends ContinentPluginBase {}
+
+  
+```
+
+``` 
+   
+    namespace Drupal\MY_MODULE\Plugin\iso3166\CountryCollection;
+    
+    use Drupal\Core\Annotation\Translation;
+    use Drupal\iso3166\Annotation\CountryCollection;
+    use Drupal\iso3166\Plugin\Iso3166\CountryCollection\CountryCollectionPluginBase;
+    
+    /**
+     * Provides a country collection.
+     *
+     * @CountryCollection(
+     *   id = "benelux",
+     *   label = @Translation("Benelux"),
+     *   countries={"BE","NL","LU"}
+     * )
+     */
+    class Benelux extends CountryCollectionPluginBase {}
+  
+```
+
+
