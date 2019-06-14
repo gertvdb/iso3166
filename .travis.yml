@@ -12,7 +12,7 @@ cache:
 install: true
 
 before_script:
-  - composer install
+  - php -d memory_limit=-1 composer install
 
 script:
   - vendor/bin/parallel-lint --exclude vendor/ -e php,module,inc,install,profile,theme .
