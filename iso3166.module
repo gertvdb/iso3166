@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * The iso3166 module.
+ */
+
+use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Element\RenderElement;
+
+/**
+ * Implements hook_theme().
+ */
+function iso3166_theme() {
+  return [
+    'country' => [
+      'render element' => 'element',
+    ],
+    'continent' => [
+      'render element' => 'element',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for iso3166 continent templates.
+ *
+ * Default template: continent.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties used: #attributes.
+ */
+function template_preprocess_continent(array &$variables) {
+  $element = $variables['element'];
+  Element::setAttributes($element, ['id', 'name', 'size']);
+  RenderElement::setAttributes($element, ['form-select']);
+
+  $variables['attributes'] = $element['#attributes'];
+  $variables['options'] = form_select_options($element);
+}
+
+/**
+ * Prepares variables for iso3166 country templates.
+ *
+ * Default template: country.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties used: #attributes.
+ */
+function template_preprocess_country(array &$variables) {
+  $element = $variables['element'];
+  Element::setAttributes($element, ['id', 'name', 'size']);
+  RenderElement::setAttributes($element, ['form-select']);
+
+  $variables['attributes'] = $element['#attributes'];
+  $variables['options'] = form_select_options($element);
+}

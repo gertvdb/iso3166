@@ -3,6 +3,7 @@
 namespace Drupal\iso3166\Service;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\iso3166\Factory\CountryFactory;
 use Drupal\iso3166\Plugin\Iso3166\ContinentManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\iso3166\Plugin\Iso3166\CountryManager;
@@ -34,16 +35,24 @@ class Iso3166 implements ContainerInjectionInterface {
    * @param \Drupal\iso3166\Plugin\Iso3166\CountryManager $countryManager
    *   The country manager.
    */
-  public function __construct(CountryManager $countryManager) {
+  public function __construct(CountryManager $countryManager, CountryFactory $countryFactory) {
     $this->countryManager = $countryManager;
+    $this->countryFactory = $countryFactory;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
+    /** @var CountryManager $countryManager */
+    $countryManager = $container->get('plugin.manager.country');
+
+    /** @var \Drupal\iso3166\Factory\CountryFactory $countryFactory */
+    $countryFactory = $container->get('iso3166.country_factory');
+
     return new static(
-      $container->get('plugin.manager.country')
+      $countryManager,
+      $countryFactory
     );
   }
 

@@ -3,12 +3,12 @@ services:
   # Services
   iso3166:
     class: Drupal\iso3166\Service\Iso3166
-    arguments: ['@plugin.manager.country', '@iso3166.country_factory', '@iso3166.continent_factory']
+    arguments: ['@plugin.manager.country', '@iso3166.country_factory']
   iso3166.data_provider:
     class: Drupal\iso3166\Service\DataProvider
     arguments: ['@string_translation']
 
-  # Factory
+  # Factories
   iso3166.country_factory:
       class: Drupal\iso3166\Factory\CountryFactory
       arguments: ['@plugin.manager.country', '@iso3166.continent_factory']

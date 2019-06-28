@@ -72,7 +72,7 @@ class CountryDerivative extends DeriverBase implements ContainerDeriverInterface
       }
     }
 
-    return $this->derivatives;
+    return parent::getDerivativeDefinitions($basePluginDefinition);
   }
 
 }

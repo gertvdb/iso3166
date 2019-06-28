@@ -25,4 +25,11 @@ interface CountryCollectionPluginInterface extends PluginInspectionInterface {
    */
   public function getCountries();
 
+  /**
+   * Get the  collection.
+   *
+   * @return \Drupal\iso3166\CountryCollection
+   */
+  public function toCollection();
+
 }

@@ -59,7 +59,7 @@ class ContinentDerivative extends DeriverBase implements ContainerDeriverInterfa
       }
     }
 
-    return $this->derivatives;
+    return parent::getDerivativeDefinitions($basePluginDefinition);
   }
 
 }

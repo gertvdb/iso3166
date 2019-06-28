@@ -33,8 +33,12 @@ class ContinentFactory implements ContainerInjectionInterface {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
+
+    /** @var ContinentManager $continentManager */
+    $continentManager = $container->get('plugin.manager.continent');
+
     return new static(
-      $container->get('plugin.manager.continent')
+      $continentManager
     );
   }
 
