@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/gertvdb/iso3166.svg?branch=8.x-1.x)](https://travis-ci.org/gertvdb/iso3166)
+
 Description
 -----------
 This module provides countries and contintents based on the official iso3166 data.
