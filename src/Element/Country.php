@@ -55,17 +55,19 @@ class Country extends Select {
    *
    * @param array $element
    *   The form element.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $formState
    *   The form state.
-   * @param array $complete_form
+   * @param array $completeForm
    *   The form.
    *
    * @return mixed
    *   The processed form element.
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
+   *
+   * @SuppressWarnings(PHPMD.UnusedFormalParameter)
    */
-  public static function processCountry(array &$element, FormStateInterface $form_state, array &$complete_form) {
+  public static function processCountry(array &$element, FormStateInterface $formState, array &$completeForm) {
 
     /** @var \Drupal\iso3166\Plugin\Iso3166\CountryCollectionManager $collectionManager */
     $collectionManager = \Drupal::service('plugin.manager.country_collection');
@@ -81,14 +83,7 @@ class Country extends Select {
       }
     }
 
-    //if (class_exists('Collator') === true) {
-      //$collator = new \Collator($user->getCulture());
-      //$collator->asort($countryOptions, SORT_LOCALE_STRING);
-    //} else {
-      asort($countryOptions);
-    //}
-
-
+    asort($countryOptions);
     $element['#options'] = $countryOptions;
 
     return $element;

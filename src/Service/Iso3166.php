@@ -34,6 +34,8 @@ class Iso3166 implements ContainerInjectionInterface {
    *
    * @param \Drupal\iso3166\Plugin\Iso3166\CountryManager $countryManager
    *   The country manager.
+   * @param \Drupal\iso3166\Factory\CountryFactory $countryFactory
+   *   The country factory.
    */
   public function __construct(CountryManager $countryManager, CountryFactory $countryFactory) {
     $this->countryManager = $countryManager;
@@ -44,7 +46,8 @@ class Iso3166 implements ContainerInjectionInterface {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    /** @var CountryManager $countryManager */
+
+    /** @var \Drupal\iso3166\Plugin\Iso3166\CountryManager $countryManager */
     $countryManager = $container->get('plugin.manager.country');
 
     /** @var \Drupal\iso3166\Factory\CountryFactory $countryFactory */

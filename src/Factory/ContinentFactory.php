@@ -3,6 +3,7 @@
 namespace Drupal\iso3166\Factory;
 
 use Drupal\iso3166\Continent;
+use Drupal\iso3166\Plugin\Iso3166\ContinentManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\iso3166\Plugin\Iso3166\ContinentManager;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -22,10 +23,10 @@ class ContinentFactory implements ContainerInjectionInterface {
   /**
    * Creates an CountryDerivative object.
    *
-   * @var \Drupal\iso3166\Plugin\Iso3166\ContinentManager $continentManager
+   * @var \Drupal\iso3166\Plugin\Iso3166\ContinentManagerInterface $continentManager
    *   The continent plugin manager.
    */
-  public function __construct(ContinentManager $continentManager) {
+  public function __construct(ContinentManagerInterface $continentManager) {
     $this->continentManager = $continentManager;
   }
 
@@ -34,7 +35,7 @@ class ContinentFactory implements ContainerInjectionInterface {
    */
   public static function create(ContainerInterface $container) {
 
-    /** @var ContinentManager $continentManager */
+    /** @var \Drupal\iso3166\Plugin\Iso3166\ContinentManagerInterface $continentManager */
     $continentManager = $container->get('plugin.manager.continent');
 
     return new static(
