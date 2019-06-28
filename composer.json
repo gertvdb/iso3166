@@ -2,7 +2,7 @@
   "name": "gertvdb/iso3166",
   "description": "Provide country and continent plugins based on ISO3611 data",
   "type": "drupal-module",
-  "license": "GPL-2.0+",
+  "license": "GPL-2.0-or-later",
   "require-dev": {
     "drupal/coder": "^8.3.1",
     "drupal/core": "^8.7",
