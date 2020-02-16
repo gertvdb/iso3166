@@ -5,6 +5,7 @@ namespace Drupal\iso3166\Plugin\Iso3166;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use LogicException;
 
 /**
  * Provides the Country plugin manager.
@@ -71,7 +72,7 @@ class CountryManager extends DefaultPluginManager implements CountryManagerInter
    */
   private function guardAgainstInvalidAlpha2($alpha2) {
     if (!is_string($alpha2) || strlen($alpha2) !== 2) {
-      throw new \LogicException(sprintf(
+      throw new LogicException(sprintf(
         'Expected $alpha2 to be a 2 character string, got : "%s"',
         $alpha2
       ));
@@ -83,7 +84,7 @@ class CountryManager extends DefaultPluginManager implements CountryManagerInter
    */
   private function guardAgainstInvalidAlpha3($alpha3) {
     if (!is_string($alpha3) || strlen($alpha3) !== 3) {
-      throw new \LogicException(sprintf(
+      throw new LogicException(sprintf(
         'Expected $alpha3 to be a 3 character string, got : "%s"',
         $alpha3
       ));
@@ -95,7 +96,7 @@ class CountryManager extends DefaultPluginManager implements CountryManagerInter
    */
   private function guardAgainstInvalidNumeric($numeric) {
     if (!is_numeric($numeric) || strlen($numeric) !== 3) {
-      throw new \LogicException(sprintf(
+      throw new LogicException(sprintf(
         'Expected $numeric to be a 3 character numeric string, got : "%s"',
         $numeric
       ));
@@ -107,7 +108,7 @@ class CountryManager extends DefaultPluginManager implements CountryManagerInter
    */
   private function guardAgainstDuplicateAlpha2($alpha2, $alpha2List) {
     if (in_array($alpha2, $alpha2List)) {
-      throw new \LogicException(sprintf(
+      throw new LogicException(sprintf(
         'Expected $alpha2 to be unique, got duplicate for: "%s". If you want to override an existing plugin use hook_iso3166_country_info_alter.',
         $alpha2
       ));
@@ -119,7 +120,7 @@ class CountryManager extends DefaultPluginManager implements CountryManagerInter
    */
   private function guardAgainstDuplicateAlpha3($alpha3, $alpha3List) {
     if (in_array($alpha3, $alpha3List)) {
-      throw new \LogicException(sprintf(
+      throw new LogicException(sprintf(
         'Expected $alpha3 to be unique, got duplicate for: "%s". If you want to override an existing plugin use hook_iso3166_country_info_alter.',
         $alpha3
       ));
@@ -131,7 +132,7 @@ class CountryManager extends DefaultPluginManager implements CountryManagerInter
    */
   private function guardAgainstDuplicateNumeric($numeric, $numericList) {
     if (in_array($numeric, $numericList)) {
-      throw new \LogicException(sprintf(
+      throw new LogicException(sprintf(
         'Expected $numeric to be unique, got duplicate for: "%s". If you want to override an existing plugin use hook_iso3166_country_info_alter.',
         $numeric
       ));
