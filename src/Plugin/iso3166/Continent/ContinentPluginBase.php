@@ -32,7 +32,7 @@ abstract class ContinentPluginBase extends PluginBase implements ContinentPlugin
    *   The continent factory.
    */
   public function __construct(array $configuration, $pluginId, $pluginDefinition, ContinentFactory $continentFactory) {
-    parent::__construct($configuration, $pluginId, $pluginDefinition, $continentFactory);
+    parent::__construct($configuration, $pluginId, $pluginDefinition);
     $this->continentFactory = $continentFactory;
   }
 

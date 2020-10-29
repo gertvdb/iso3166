@@ -1,6 +1,6 @@
 name: ISO3611
 type: module
 description: Provide country and continent plugins based on ISO3611 data.
-core: 8.x
-package: ISO3611
+core_version_requirement: ^8.8 || ^9
+package: Field types
 version: 8.x-1.0
